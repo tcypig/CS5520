@@ -6,6 +6,9 @@
       "@/*": [
         "./*"
       ]  
-  },
+    },
+    "noImplicitAny": true,
+    "strictNullChecks": true
+
   }
 }
