@@ -1,11 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Header from './components/Header';
+
 
 export default function App() {
+  const appName = "My Awesome App";
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+      {/* <Text>Welcome to {appName}</Text> */}
       <StatusBar style="auto" />
+      <Header name={appName}/>
     </View>
   );
 }
