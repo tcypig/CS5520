@@ -8,10 +8,26 @@ interface InputProps {
 
 export default function Input({ focused = false }: InputProps) {
   const [text, setText] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  const [message, setMessage] = useState("");
   
   function updateText(changedText: string) {
     // update the text state
     setText(changedText);
+  }
+
+  function handleBlur() {
+    setIsFocused(false);
+    if (text.length < 3) {
+      setMessage("Please type more than 3 characters");
+    } else {
+      setMessage("Thank you");
+    }
+  }
+
+  function handleFocus() {
+    setIsFocused(true);
+    setMessage("");
   }
 
   
@@ -21,10 +37,15 @@ export default function Input({ focused = false }: InputProps) {
         value={text} 
         onChangeText={updateText}
         autoFocus={focused}
+        onBlur={handleBlur}
+        onFocus={handleFocus}
         placeholder='type something'
       />
-      {text.length > 0 && (
+      {isFocused && text.length > 0 && (
         <Text>Character Count: {text.length}</Text>
+      )}
+      {!isFocused && (
+        <Text>{message}</Text>
       )}
     </View>
   )
