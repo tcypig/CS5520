@@ -23,6 +23,9 @@ export default function Input({ focused = false }: InputProps) {
         autoFocus={focused}
         placeholder='type something'
       />
+      {text.length > 0 && (
+        <Text>Character Count: {text.length}</Text>
+      )}
     </View>
   )
 }
