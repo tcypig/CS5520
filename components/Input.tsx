@@ -2,7 +2,11 @@ import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 
-export default function Input() {
+interface InputProps {
+  focused?: boolean;
+}
+
+export default function Input({ focused = false }: InputProps) {
   const [text, setText] = useState("");
   
   function updateText(changedText: string) {
@@ -16,6 +20,7 @@ export default function Input() {
       <TextInput 
         value={text} 
         onChangeText={updateText}
+        autoFocus={focused}
         placeholder='type something'
       />
     </View>
