@@ -10,10 +10,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* <Text>Welcome to {appName}</Text> */}
       <StatusBar style="auto" />
       <Header name={appName} />
-      <Input />
+      <Input focused={true}/>
     </View>
   );
 }
