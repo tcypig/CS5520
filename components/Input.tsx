@@ -1,16 +1,18 @@
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button, Modal } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 
 interface InputProps {
   focused?: boolean;
   inputHandler: (data:string) => void;
+  modalVisble: boolean;
 }
 
-export default function Input({ focused = false, inputHandler }: InputProps) {
+export default function Input({ focused = false, inputHandler, modalVisble }: InputProps) {
   const [text, setText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [message, setMessage] = useState("");
+
   
   function updateText(changedText: string) {
     // update the text state
@@ -37,24 +39,34 @@ export default function Input({ focused = false, inputHandler }: InputProps) {
   }
   
   return (
-    <View>
-      <TextInput 
-        value={text} 
-        onChangeText={updateText}
-        autoFocus={focused}
-        onBlur={handleBlur}
-        onFocus={handleFocus}
-        placeholder='type something'
-      />
-      {isFocused && text.length > 0 && (
-        <Text>Character Count: {text.length}</Text>
-      )}
-      {!isFocused && (
-        <Text>{message}</Text>
-      )}
-      <Button title="Confirm" onPress={handleConfirm} />
-    </View>
+    <Modal visible={modalVisble} animationType='slide'>
+
+      <View style={styles.container}>
+        <TextInput 
+          value={text} 
+          onChangeText={updateText}
+          autoFocus={focused}
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          placeholder='type something'
+        />
+        {isFocused && text.length > 0 && (
+          <Text>Character Count: {text.length}</Text>
+        )}
+        {!isFocused && (
+          <Text>{message}</Text>
+        )}
+        <Button title="Confirm" onPress={handleConfirm} />
+      </View>
+    </Modal>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
