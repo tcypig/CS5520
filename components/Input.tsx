@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TextInput, View } from 'react-native'
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
 
@@ -30,6 +30,9 @@ export default function Input({ focused = false }: InputProps) {
     setMessage("");
   }
 
+  function handleConfirm() {
+    console.log("user has typed ", text)
+  }
   
   return (
     <View>
@@ -47,6 +50,7 @@ export default function Input({ focused = false }: InputProps) {
       {!isFocused && (
         <Text>{message}</Text>
       )}
+      <Button title="Confirm" onPress={handleConfirm} />
     </View>
   )
 }
