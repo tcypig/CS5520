@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 interface InputProps {
   focused?: boolean;
+  inputHandler: (data:string) => void;
 }
 
-export default function Input({ focused = false }: InputProps) {
+export default function Input({ focused = false, inputHandler }: InputProps) {
   const [text, setText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [message, setMessage] = useState("");
@@ -31,7 +32,8 @@ export default function Input({ focused = false }: InputProps) {
   }
 
   function handleConfirm() {
-    console.log("user has typed ", text)
+    console.log("user has typed ", text);
+    inputHandler(text);
   }
   
   return (
