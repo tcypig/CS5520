@@ -39,24 +39,25 @@ export default function Input({ focused = false, inputHandler, modalVisble }: In
   }
   
   return (
-    <Modal visible={modalVisble} animationType='slide'>
-
+    <Modal transparent={true} visible={modalVisble} animationType='slide'>
       <View style={styles.container}>
-        <TextInput 
-          value={text} 
-          onChangeText={updateText}
-          autoFocus={focused}
-          onBlur={handleBlur}
-          onFocus={handleFocus}
-          placeholder='type something'
-        />
-        {isFocused && text.length > 0 && (
-          <Text>Character Count: {text.length}</Text>
-        )}
-        {!isFocused && (
-          <Text>{message}</Text>
-        )}
-        <Button title="Confirm" onPress={handleConfirm} />
+        <View style={styles.modalContainer}>
+          <TextInput 
+            value={text} 
+            onChangeText={updateText}
+            autoFocus={focused}
+            onBlur={handleBlur}
+            onFocus={handleFocus}
+            placeholder='type something'
+          />
+          {isFocused && text.length > 0 && (
+            <Text>Character Count: {text.length}</Text>
+          )}
+          {!isFocused && (
+            <Text>{message}</Text>
+          )}
+          <Button title="Confirm" onPress={handleConfirm} />
+        </View>
       </View>
     </Modal>
   )
@@ -69,4 +70,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  modalContainer: {
+    backgroundColor: "#eee",
+    borderRadius: 10,
+  }
 });
