@@ -9,9 +9,16 @@ interface HeaderProps {
 export default function Header({name}: HeaderProps) {
   return (
     <View>
-      <Text>Welcome to {name}</Text>
+      <Text style={styles.header}>Welcome to {name}</Text>
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  header: {
+    fontSize: 26,
+    color: '#9900cc',
+    borderWidth: 2,
+    borderColor: '#9900cc',
+  }
+})

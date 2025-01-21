@@ -43,6 +43,7 @@ export default function Input({ focused = false, inputHandler, modalVisble }: In
       <View style={styles.container}>
         <View style={styles.modalContainer}>
           <TextInput 
+            style={styles.input}
             value={text} 
             onChangeText={updateText}
             autoFocus={focused}
@@ -56,7 +57,9 @@ export default function Input({ focused = false, inputHandler, modalVisble }: In
           {!isFocused && (
             <Text>{message}</Text>
           )}
-          <Button title="Confirm" onPress={handleConfirm} />
+          <View style={styles.buttonContainer}>
+            <Button title="Confirm" onPress={handleConfirm} />
+          </View>
         </View>
       </View>
     </Modal>
@@ -66,12 +69,24 @@ export default function Input({ focused = false, inputHandler, modalVisble }: In
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalContainer: {
+    width: "60%",
     backgroundColor: "#eee",
     borderRadius: 10,
+    alignItems: "center",
+  },
+  input: {
+    width: "80%",
+    borderColor: "#9900cc",
+    borderWidth: 1,
+    margin: 20,
+  },
+  buttonContainer: {
+    width: "30%",
+    margin: 6,
   }
 });

@@ -30,7 +30,9 @@ export default function App() {
         <Button title='Add a goal' onPress={() => setIsModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-        <Text style={{backgroundColor: "pink"}}>{receivedData}</Text>
+        <View style={styles.bottomText}>
+          <Text style={{ color: "#00008B" }}>{receivedData}</Text>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -52,5 +54,12 @@ const styles = StyleSheet.create({
     flex: 4,
     backgroundColor: '#dcd',
     alignItems: 'center',
+  },
+
+  bottomText: {
+    backgroundColor: "grey",
+    borderRadius: 4,
+    margin: 10,
+    padding: 4,
   }
 });
