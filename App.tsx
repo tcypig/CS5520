@@ -26,13 +26,15 @@ export default function App() {
           focused={true} 
           inputHandler={handleInputData} 
           modalVisble={isModalVisible}
+          cancelHandler={() => setIsModalVisible(false)}
         />
         <Button title='Add a goal' onPress={() => setIsModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-        <View style={styles.bottomText}>
-          <Text style={{ color: "#00008B" }}>{receivedData}</Text>
-        </View>
+        {receivedData ? (
+          <View style={styles.bottomText}>
+            <Text style={{ color: "#00008B" }}>{receivedData}</Text>
+          </View>) : null}
       </View>
     </SafeAreaView>
   );
