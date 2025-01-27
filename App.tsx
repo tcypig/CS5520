@@ -3,6 +3,7 @@ import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList } f
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
+import GoalItem from './components/GoalItem';
 
 export interface Goal {
   id: number;
@@ -47,9 +48,7 @@ export default function App() {
           data={goals} 
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text style={styles.text}>{item.text}</Text>
-              </View>
+              <GoalItem goalObj={item} />
             )}}
           />
       </View>
@@ -81,14 +80,14 @@ const styles = StyleSheet.create({
   //   margin: 10,
   //   padding: 4,
   // },
-  text:{
-    color: "purple",
-    fontSize: 80,
-    marginTop: 50,
-    backgroundColor: "#aaa",
-    padding: 5,
-    borderRadius: 5,
-  },
+  // text:{
+  //   color: "purple",
+  //   fontSize: 80,
+  //   marginTop: 50,
+  //   backgroundColor: "#aaa",
+  //   padding: 5,
+  //   borderRadius: 5,
+  // },
   contentContainer: {
     alignItems: 'center',
   }
