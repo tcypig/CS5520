@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
@@ -42,13 +42,15 @@ export default function App() {
         <Button title='Add a goal' onPress={() => setIsModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-        {goals.map((goalObj) => {
-          return (
-            <View key={goalObj.id}>
-              <Text style={styles.text}>{goalObj.text}</Text>
-            </View>
-          );
-        })}
+        <ScrollView contentContainerStyle={styles.contentContainer}>
+          {goals.map((goalObj) => {
+            return (
+              <View key={goalObj.id}>
+                <Text style={styles.text}>{goalObj.text}</Text>
+              </View>
+            );
+          })}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 4,
     backgroundColor: '#dcd',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
 
   // bottomText: {
@@ -80,10 +82,13 @@ const styles = StyleSheet.create({
   // },
   text:{
     color: "purple",
-    fontSize: 20,
-    marginTop: 5,
+    fontSize: 80,
+    marginTop: 50,
     backgroundColor: "#aaa",
     padding: 5,
     borderRadius: 5,
+  },
+  contentContainer: {
+    alignItems: 'center',
   }
 });
