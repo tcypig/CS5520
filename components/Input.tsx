@@ -64,11 +64,13 @@ export default function Input({ focused = false, inputHandler, modalVisble, canc
           <Image 
             style={styles.image}
             source={{ uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png" }} 
+            alt="Image of an arrow"
           />
           {/* local image */}
           <Image 
             style={styles.image}
             source={require('../assets/2617812.png')} 
+            alt="Image of an arrow"
           />
 
           <TextInput 
