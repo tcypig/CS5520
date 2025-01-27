@@ -4,17 +4,28 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
 
+export interface Goal {
+  id: number;
+  text: string;
+}
 
 export default function App() {
 
   const appName = "My Awesome App";
+  const [goals, setGoals] = useState<Goal[]>([]); 
+
   const [receivedData, setReceivedData] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   function handleInputData(data: string) {
     console.log("Data received from Input", data);
-    setReceivedData(data);
+    // setReceivedData(data);
     setIsModalVisible(false);
+    // define a variableo of type Goal object
+    // update the goals state with the new goal object
+    // use updating question
+    let newGoal: Goal = {id: Math.random(), text: data}
+    setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
 
   return (
@@ -31,10 +42,8 @@ export default function App() {
         <Button title='Add a goal' onPress={() => setIsModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-        {receivedData ? (
-          <View style={styles.bottomText}>
-            <Text style={{ color: "#00008B" }}>{receivedData}</Text>
-          </View>) : null}
+        {receivedData &&
+            <Text style={styles.text}>{receivedData}</Text>}
       </View>
     </SafeAreaView>
   );
@@ -58,10 +67,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  bottomText: {
-    backgroundColor: "grey",
-    borderRadius: 4,
-    margin: 10,
-    padding: 4,
+  // bottomText: {
+  //   backgroundColor: "grey",
+  //   borderRadius: 4,
+  //   margin: 10,
+  //   padding: 4,
+  // },
+  text:{
+    color: "purple",
+    fontSize: 20,
+    marginTop: 5,
+    backgroundColor: "#aaa",
+    padding: 5,
+    borderRadius: 5,
   }
 });
