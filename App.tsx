@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
@@ -42,15 +42,16 @@ export default function App() {
         <Button title='Add a goal' onPress={() => setIsModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-        <ScrollView contentContainerStyle={styles.contentContainer}>
-          {goals.map((goalObj) => {
+        <FlatList 
+          contentContainerStyle={styles.contentContainer}
+          data={goals} 
+          renderItem={({ item }) => {
             return (
-              <View key={goalObj.id}>
-                <Text style={styles.text}>{goalObj.text}</Text>
+              <View>
+                <Text style={styles.text}>{item.text}</Text>
               </View>
-            );
-          })}
-        </ScrollView>
+            )}}
+          />
       </View>
     </SafeAreaView>
   );
