@@ -18,6 +18,14 @@ export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  function handleDeleteGoal(id: number) {
+    console.log("Delete goal with id: ", id);
+    // update the goals state by filtering out the goal with the id
+    setGoals((currGoals) => {
+      return currGoals.filter((goal) => goal.id !== id);
+    });
+  }
+
   function handleInputData(data: string) {
     console.log("Data received from Input", data);
     // setReceivedData(data);
@@ -48,7 +56,7 @@ export default function App() {
           data={goals} 
           renderItem={({ item }) => {
             return (
-              <GoalItem goalObj={item} />
+              <GoalItem goalObj={item} deleteHandler={handleDeleteGoal} />
             )}}
           />
       </View>
