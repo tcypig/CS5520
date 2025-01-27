@@ -1,20 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
+import GoalItem from './components/GoalItem';
 
+export interface Goal {
+  id: number;
+  text: string;
+}
 
 export default function App() {
 
   const appName = "My Awesome App";
+  const [goals, setGoals] = useState<Goal[]>([]); 
+
   const [receivedData, setReceivedData] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
+  function handleDeleteGoal(id: number) {
+    console.log("Delete goal with id: ", id);
+    // update the goals state by filtering out the goal with the id
+    setGoals((currGoals) => {
+      return currGoals.filter((goal) => goal.id !== id);
+    });
+  }
+
   function handleInputData(data: string) {
     console.log("Data received from Input", data);
-    setReceivedData(data);
+    // setReceivedData(data);
     setIsModalVisible(false);
+    // define a variableo of type Goal object
+    // update the goals state with the new goal object
+    // use updating question
+    let newGoal: Goal = {id: Math.random(), text: data}
+    setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
 
   return (
@@ -31,10 +51,14 @@ export default function App() {
         <Button title='Add a goal' onPress={() => setIsModalVisible(true)} />
       </View>
       <View style={styles.bottomContainer}>
-        {receivedData ? (
-          <View style={styles.bottomText}>
-            <Text style={{ color: "#00008B" }}>{receivedData}</Text>
-          </View>) : null}
+        <FlatList 
+          contentContainerStyle={styles.contentContainer}
+          data={goals} 
+          renderItem={({ item }) => {
+            return (
+              <GoalItem goalObj={item} deleteHandler={handleDeleteGoal} />
+            )}}
+          />
       </View>
     </SafeAreaView>
   );
@@ -55,13 +79,24 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 4,
     backgroundColor: '#dcd',
-    alignItems: 'center',
+    // alignItems: 'center',
   },
 
-  bottomText: {
-    backgroundColor: "grey",
-    borderRadius: 4,
-    margin: 10,
-    padding: 4,
+  // bottomText: {
+  //   backgroundColor: "grey",
+  //   borderRadius: 4,
+  //   margin: 10,
+  //   padding: 4,
+  // },
+  // text:{
+  //   color: "purple",
+  //   fontSize: 80,
+  //   marginTop: 50,
+  //   backgroundColor: "#aaa",
+  //   padding: 5,
+  //   borderRadius: 5,
+  // },
+  contentContainer: {
+    alignItems: 'center',
   }
 });
