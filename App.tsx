@@ -85,7 +85,7 @@ export default function App() {
           )}
           ListFooterComponent={()=> (
             goals.length > 0 && (
-              <View>
+              <View style={styles.bottomButton}>
                 <Button
                   title= "Delete All"
                   onPress={handleDeleteAllGoals}
@@ -141,5 +141,8 @@ const styles = StyleSheet.create({
     height: 2,
     backgroundColor: "purple",
     marginVertical: 10,
+  },
+  bottomButton: {
+    margin: 20,
   }
 });
