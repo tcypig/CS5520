@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert } from 'react-native';
 import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
@@ -24,6 +24,23 @@ export default function App() {
     setGoals((currGoals) => {
       return currGoals.filter((goal) => goal.id !== id);
     });
+  }
+
+  function handleDeleteAllGoals() {
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure you want to delete all goals?",
+      [
+        {
+          text: "Yes",
+          onPress: () => setGoals([])
+        },
+        {
+          text: "No",
+          style: "cancel",
+        },
+      ]
+    )
   }
 
   function handleInputData(data: string) {
@@ -58,7 +75,28 @@ export default function App() {
             return (
               <GoalItem goalObj={item} deleteHandler={handleDeleteGoal} />
             )}}
-          />
+          ListEmptyComponent={()=> (
+            <Text style={styles.text}>No goals to show</Text>
+          )}
+          ListHeaderComponent={()=> (
+            goals.length > 0 && (
+              <Text style={styles.text}>My Goal List</Text>
+            )
+          )}
+          ListFooterComponent={()=> (
+            goals.length > 0 && (
+              <View>
+                <Button
+                  title= "Delete All"
+                  onPress={handleDeleteAllGoals}
+                />
+              </View>
+            )
+          )}
+          ItemSeparatorComponent={()=> (
+            <View style={styles.separator}/>
+          )}
+        />
       </View>
     </SafeAreaView>
   );
@@ -88,15 +126,20 @@ const styles = StyleSheet.create({
   //   margin: 10,
   //   padding: 4,
   // },
-  // text:{
-  //   color: "purple",
-  //   fontSize: 80,
-  //   marginTop: 50,
-  //   backgroundColor: "#aaa",
-  //   padding: 5,
-  //   borderRadius: 5,
-  // },
+  text:{
+    color: "purple",
+    fontSize: 20,
+    marginTop: 5,
+    // backgroundColor: "#aaa",
+    padding: 5,
+    borderRadius: 5,
+  },
   contentContainer: {
     alignItems: 'center',
+  },
+  separator: {
+    height: 2,
+    backgroundColor: "purple",
+    marginVertical: 10,
   }
 });
