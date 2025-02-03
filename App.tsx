@@ -23,7 +23,7 @@ export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     // start the listener on real time changes on goals collection
-    const unsubcribe = onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapshot) => {
       // check if the querySnapshot is empty
       // setGoals([])
       if (querySnapshot.empty) {
@@ -44,7 +44,7 @@ export default function App() {
     });
     // return a cleanup function to stop the listener
     return () => {
-      unsubcribe();
+      unsubscribe();
     };
   }, []);
 
