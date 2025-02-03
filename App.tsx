@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
 import GoalItem from './components/GoalItem';
+import { app } from './Firebase/firebaseSetup';
 
 export interface Goal {
   id: number;
