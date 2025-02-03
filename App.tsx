@@ -1,15 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
 import GoalItem from './components/GoalItem';
 import { database } from './Firebase/firebaseSetup';
 import { writeToDB } from './Firebase/firestoreHelper';
 import { goalData } from './Firebase/firestoreHelper';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 export interface GoalDB {
-  id: number;
+  id: string;
   text: string;
 }
 
@@ -20,8 +21,30 @@ export default function App() {
 
   const [receivedData, setReceivedData] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  useEffect(() => {
+    // start the listener on real time changes on goals collection
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+      // check if the querySnapshot is empty
+      // setGoals([])
+      if (querySnapshot.empty) {
+        setGoals([]);
+      } else {
+        let newArrayOfGoals: GoalDB[] = [];
+        querySnapshot.forEach((docSnapshot) => {
+          newArrayOfGoals.push({
+            ...(docSnapshot.data() as goalData),
+            id: docSnapshot.id
+          });
+        });
+        console.log("newArray",newArrayOfGoals);
+        setGoals(newArrayOfGoals);
+      }
+      // else forEach on the querySnapshot and get the data by calling docSnapshot.data()
+      // store it in an array and setGoals with the array
+    });
+  }, []);
 
-  function handleDeleteGoal(id: number) {
+  function handleDeleteGoal(id: string) {
     console.log("Delete goal with id: ", id);
     // update the goals state by filtering out the goal with the id
     setGoals((currGoals) => {
