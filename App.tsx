@@ -4,17 +4,19 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import Input from './components/Input';
 import GoalItem from './components/GoalItem';
-import { app } from './Firebase/firebaseSetup';
+import { database } from './Firebase/firebaseSetup';
+import { writeToDB } from './Firebase/firestoreHelper';
+import { goalData } from './Firebase/firestoreHelper';
 
-export interface Goal {
+export interface GoalDB {
   id: number;
   text: string;
 }
 
 export default function App() {
-
+  console.log(database);
   const appName = "My Awesome App";
-  const [goals, setGoals] = useState<Goal[]>([]); 
+  const [goals, setGoals] = useState<GoalDB[]>([]); 
 
   const [receivedData, setReceivedData] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -51,8 +53,9 @@ export default function App() {
     // define a variableo of type Goal object
     // update the goals state with the new goal object
     // use updating question
-    let newGoal: Goal = {id: Math.random(), text: data}
-    setGoals((currGoals)=> {return [...currGoals, newGoal]});
+    let newGoal: goalData = {text: data};
+    writeToDB(newGoal, "goals");
+    // setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
 
   return (
