@@ -5,31 +5,31 @@ import Header from './components/Header';
 import Input from './components/Input';
 import GoalItem from './components/GoalItem';
 import { database } from './Firebase/firebaseSetup';
-import { writeToDB } from './Firebase/firestoreHelper';
+import { deleteAllFromDB, deleteFromDB, writeToDB } from './Firebase/firestoreHelper';
 import { goalData } from './Firebase/firestoreHelper';
 import { collection, onSnapshot } from 'firebase/firestore';
 
-export interface GoalDB {
+export interface GoalFromDB {
   id: string;
   text: string;
 }
 
 export default function App() {
-  console.log(database);
+  // console.log(database);
   const appName = "My Awesome App";
-  const [goals, setGoals] = useState<GoalDB[]>([]); 
+  const [goals, setGoals] = useState<GoalFromDB[]>([]); 
 
   const [receivedData, setReceivedData] = useState("");
   const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     // start the listener on real time changes on goals collection
-    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    const unsubcribe = onSnapshot(collection(database, "goals"), (querySnapshot) => {
       // check if the querySnapshot is empty
       // setGoals([])
       if (querySnapshot.empty) {
         setGoals([]);
       } else {
-        let newArrayOfGoals: GoalDB[] = [];
+        let newArrayOfGoals: GoalFromDB[] = [];
         querySnapshot.forEach((docSnapshot) => {
           newArrayOfGoals.push({
             ...(docSnapshot.data() as goalData),
@@ -42,14 +42,21 @@ export default function App() {
       // else forEach on the querySnapshot and get the data by calling docSnapshot.data()
       // store it in an array and setGoals with the array
     });
+    // return a cleanup function to stop the listener
+    return () => {
+      unsubcribe();
+    };
   }, []);
 
   function handleDeleteGoal(id: string) {
     console.log("Delete goal with id: ", id);
     // update the goals state by filtering out the goal with the id
-    setGoals((currGoals) => {
-      return currGoals.filter((goal) => goal.id !== id);
-    });
+    // setGoals((currGoals) => {
+    //   return currGoals.filter((goal) => goal.id !== id);
+    // });
+
+    // delete the goal from the database
+    deleteFromDB(id, "goals");
   }
 
   function handleDeleteAllGoals() {
@@ -59,7 +66,7 @@ export default function App() {
       [
         {
           text: "Yes",
-          onPress: () => setGoals([])
+          onPress: () => deleteAllFromDB("goals"),
         },
         {
           text: "No",

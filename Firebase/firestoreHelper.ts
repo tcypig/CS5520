@@ -1,4 +1,4 @@
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export interface goalData {
@@ -12,4 +12,24 @@ export async function writeToDB(data: goalData, collectionName: string) {
         console.error("Error adding document: ", e);
     }
     
+}
+
+// delete the goal from the database
+export async function deleteFromDB(id: string, collectionName: string) {
+    try {
+        await deleteDoc(doc(database, collectionName, id));
+    } catch (e) {
+        console.error("Error deleting document: ", e);
+    }
+}
+
+export async function deleteAllFromDB(collectionName: string) {
+    try {
+        const querySnapshot = await getDocs(collection(database, collectionName));
+        querySnapshot.forEach((document) => {
+            deleteDoc(doc(database, collectionName, document.id));
+        });
+    } catch (e) {
+        console.error("Error deleting document: ", e);
+    }
 }
