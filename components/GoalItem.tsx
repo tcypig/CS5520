@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React from 'react'
 import { GoalFromDB } from '../App'
+import { Link, router } from 'expo-router';
 
 interface GoalItemProps {
     goalObj: GoalFromDB;
@@ -12,6 +13,14 @@ export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
     <View style={styles.textContainer}>
         <Text style={styles.text}>{goalObj.text}</Text>
         <Button title="X" onPress={() => deleteHandler(goalObj.id)} />
+        {/* <Link asChild href={`/goals/${goalObj.id}`}> 
+          <Button title="info" />
+        </Link> */}
+        <Button title="info" onPress={() => 
+          router.navigate(`/goals/${goalObj.id}`)
+          } 
+        />
+        {/* <Button title="info" onPress={}/> */}
     </View>
   )
 }
