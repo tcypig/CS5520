@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, getDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
 
 export interface goalData {
@@ -45,4 +45,8 @@ export async function readDocFromDB(id: string, collectionName: string) {
     catch (err) {
       console.log(err)
     }
+  }
+
+  export async function updateDB(id: string, collectionName: string, updateData: object) {
+    await setDoc(doc(database, collectionName, id), updateData, { merge: true });
   }
