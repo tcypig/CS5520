@@ -11,8 +11,8 @@ export default function GoalDetail() {
   const [warning, setWarning] = useState(false);
   
   function warningHandeler() {
-    setWarning(!warning);
-    updateDB(id, "goals", {warning: !warning});
+    setWarning(true);
+    updateDB(id, "goals", {warning: true});
   }
 
   useEffect(() => {
