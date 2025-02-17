@@ -2,11 +2,11 @@ import { View, Text, Button, StyleSheet } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Stack, useLocalSearchParams, useNavigation } from 'expo-router';
 import { readDocFromDB } from '@/Firebase/firestoreHelper';
-import { goalData, updateDB } from '@/Firebase/firestoreHelper';
+import { GoalData, updateDB } from '@/Firebase/firestoreHelper';
 
 export default function GoalDetail() {
   const { id } = useLocalSearchParams<{id: string}>();
-  const [goal, setGoal] = useState<goalData | null>(null);
+  const [goal, setGoal] = useState<GoalData | null>(null);
   // const navigation = useNavigation();
   const [warning, setWarning] = useState(false);
   
@@ -24,7 +24,7 @@ export default function GoalDetail() {
           if (data?.warning) {
             setWarning(true);
           }
-          setGoal(data as goalData);
+          setGoal(data as GoalData);
           // navigation.setOptions({headerTitle: data.text});
         }
       }

@@ -6,7 +6,7 @@ import Input from '@/components/Input';
 import GoalItem from '@/components/GoalItem';
 import { database } from '@/Firebase/firebaseSetup';
 import { deleteAllFromDB, deleteFromDB, writeToDB } from '@/Firebase/firestoreHelper';
-import { goalData } from '@/Firebase/firestoreHelper';
+import { GoalData } from '@/Firebase/firestoreHelper';
 import { collection, onSnapshot } from 'firebase/firestore';
 
 export interface GoalFromDB {
@@ -32,7 +32,7 @@ export default function App() {
         let newArrayOfGoals: GoalFromDB[] = [];
         querySnapshot.forEach((docSnapshot) => {
           newArrayOfGoals.push({
-            ...(docSnapshot.data() as goalData),
+            ...(docSnapshot.data() as GoalData),
             id: docSnapshot.id
           });
         });
@@ -83,7 +83,7 @@ export default function App() {
     // define a variableo of type Goal object
     // update the goals state with the new goal object
     // use updating question
-    let newGoal: goalData = {text: data};
+    let newGoal: GoalData = {text: data};
     writeToDB(newGoal, "goals");
     // setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
