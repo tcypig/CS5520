@@ -3,6 +3,7 @@ import React from 'react'
 import { GoalFromDB } from '../App'
 import { Link, router } from 'expo-router';
 import PressableButton from './PressableButton';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface GoalItemProps {
     goalObj: GoalFromDB;
@@ -27,9 +28,10 @@ export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
           deleteHandler(goalObj.id)
         }}
         pressedStyle={styles.pressed}
-        // componentStyle={{backgroundColor: "pink"}}
+        componentStyle={styles.deleteIcon}
       >
-        <Text>x</Text>
+        {/* <Text>x</Text> */}
+        <Ionicons name="trash" size={24} color="black" />
       </PressableButton>
         {/* <Button title="X" onPress={() => deleteHandler(goalObj.id)} /> */}
         {/* <Link asChild href={`/goals/${goalObj.id}`}> 
@@ -68,6 +70,9 @@ const styles = StyleSheet.create({
   },
   androidRipple: {
     color: "red",
+  },
+  deleteIcon: {
+    backgroundColor: "#aaa",
   }
     
 })
