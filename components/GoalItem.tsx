@@ -11,8 +11,11 @@ interface GoalItemProps {
 export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
   return (
     <Pressable
-      style={styles.textContainer}
-      android_ripple={{color: "green"}}
+      // style={styles.textContainer}
+      style={({pressed})=>{
+        return [styles.textContainer, pressed && styles.pressed];
+      }}
+      android_ripple={styles.androidRipple}
       onPress={() => 
         router.navigate(`/goals/${goalObj.id}`)
         }
@@ -32,20 +35,27 @@ export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
 }
 
 const styles = StyleSheet.create({
-    textContainer:{
-        flexDirection: "row",
-        borderRadius: 5,
-        backgroundColor: "#aaa",
-        justifyContent: "space-between",
-        marginTop: 15,
-      },
-    text:{
-        color: "purple",
-        fontSize: 20,
-        // marginTop: 5,
-        backgroundColor: "#aaa",
-        padding: 5,
-        borderRadius: 5,
-      },
+  textContainer:{
+    flexDirection: "row",
+    borderRadius: 5,
+    backgroundColor: "#aaa",
+    justifyContent: "space-between",
+    marginTop: 15,
+    },
+  text:{
+    color: "purple",
+    fontSize: 20,
+    // marginTop: 5,
+    backgroundColor: "#aaa",
+    padding: 5,
+    borderRadius: 5,
+    },
+  pressed: {
+    backgroundColor: "grey",
+    opacity: 0.5,
+  },
+  androidRipple: {
+    color: "red",
+  }
     
 })
