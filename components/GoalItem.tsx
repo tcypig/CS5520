@@ -12,6 +12,7 @@ export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
   return (
     <Pressable
       style={styles.textContainer}
+      android_ripple={{color: "green"}}
       onPress={() => 
         router.navigate(`/goals/${goalObj.id}`)
         }
