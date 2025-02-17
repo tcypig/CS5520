@@ -3,12 +3,13 @@ import React from 'react'
 
 interface PressableButtonProps {
     pressedHandler: () => void;
+    pressedInHandler?: () => void;
     pressedStyle?: StyleProp<ViewStyle>;
     children: React.ReactNode;
     componentStyle?: StyleProp<ViewStyle>;
 }
 
-export default function PressableButton({children, pressedHandler, pressedStyle, componentStyle}:PressableButtonProps) {
+export default function PressableButton({children, pressedHandler, pressedInHandler, pressedStyle, componentStyle}:PressableButtonProps) {
   return (
     <Pressable 
       onPress={pressedHandler} 
