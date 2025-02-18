@@ -8,9 +8,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 interface GoalItemProps {
     goalObj: GoalFromDB;
     deleteHandler: (deleteId: string) => void;
+    deleteConfirmHandler?: (deleteId: string) => void;
   }
 
-export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
+export default function GoalItem({goalObj, deleteHandler, deleteConfirmHandler}: GoalItemProps) {
   return (
     <Pressable
       // style={styles.textContainer}
@@ -27,6 +28,7 @@ export default function GoalItem({goalObj, deleteHandler}: GoalItemProps) {
         pressedHandler={()=> {
           deleteHandler(goalObj.id)
         }}
+        longPressdHandler={() => deleteConfirmHandler?.(goalObj.id)}
         pressedStyle={styles.pressed}
         componentStyle={styles.deleteIcon}
       >

@@ -60,6 +60,24 @@ export default function App() {
     deleteFromDB(id, "goals");
   }
 
+  function handleConfirmDeleteGoal(id: string) {
+    Alert.alert(
+      "Delete",
+      "Are you sure you want to delete this item?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => deleteFromDB(id, "goals"),
+        },
+      ]
+    )
+
+  }
+
   function handleDeleteAllGoals() {
     Alert.alert(
       "Delete All Goals",
@@ -113,7 +131,11 @@ export default function App() {
           data={goals} 
           renderItem={({ item }) => {
             return (
-              <GoalItem goalObj={item} deleteHandler={handleDeleteGoal} />
+              <GoalItem 
+                goalObj={item} 
+                deleteHandler={handleDeleteGoal} 
+                deleteConfirmHandler={handleConfirmDeleteGoal} 
+              />
             )}}
           ListEmptyComponent={()=> (
             <Text style={styles.text}>No goals to show</Text>

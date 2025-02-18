@@ -4,15 +4,17 @@ import React from 'react'
 interface PressableButtonProps {
     pressedHandler: () => void;
     pressedInHandler?: () => void;
+    longPressdHandler?: () => void;
     pressedStyle?: StyleProp<ViewStyle>;
     children: React.ReactNode;
     componentStyle?: StyleProp<ViewStyle>;
 }
 
-export default function PressableButton({children, pressedHandler, pressedInHandler, pressedStyle, componentStyle}:PressableButtonProps) {
+export default function PressableButton({children, pressedHandler, pressedInHandler, longPressdHandler, pressedStyle, componentStyle}:PressableButtonProps) {
   return (
     <Pressable 
       onPress={pressedHandler} 
+      onLongPress={longPressdHandler}
       style={({pressed})=>{
         return [
           styles.defaultStyle, 
