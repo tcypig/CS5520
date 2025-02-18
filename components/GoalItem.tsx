@@ -9,9 +9,13 @@ interface GoalItemProps {
     goalObj: GoalFromDB;
     deleteHandler: (deleteId: string) => void;
     deleteConfirmHandler?: (deleteId: string) => void;
+    separators: {
+      highlight: () => void;
+      unhighlight: () => void;
+    }
   }
 
-export default function GoalItem({goalObj, deleteHandler, deleteConfirmHandler}: GoalItemProps) {
+export default function GoalItem({goalObj, deleteHandler, deleteConfirmHandler, separators}: GoalItemProps) {
   return (
     <Pressable
       // style={styles.textContainer}
@@ -22,6 +26,8 @@ export default function GoalItem({goalObj, deleteHandler, deleteConfirmHandler}:
       onPress={() => 
         router.navigate(`/goals/${goalObj.id}`)
       }
+      onPressIn={() => separators.highlight()}
+      onPressOut={() => separators.unhighlight()}
     >
       <Text style={styles.text}>{goalObj.text}</Text>
       <PressableButton

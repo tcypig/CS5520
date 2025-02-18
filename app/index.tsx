@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert, Pressable } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Input from '@/components/Input';
@@ -129,12 +129,13 @@ export default function App() {
         <FlatList 
           contentContainerStyle={styles.contentContainer}
           data={goals} 
-          renderItem={({ item }) => {
+          renderItem={({ item, separators }) => {
             return (
               <GoalItem 
                 goalObj={item} 
                 deleteHandler={handleDeleteGoal} 
                 deleteConfirmHandler={handleConfirmDeleteGoal} 
+                separators={separators}
               />
             )}}
           ListEmptyComponent={()=> (
@@ -155,8 +156,8 @@ export default function App() {
               </View>
             )
           )}
-          ItemSeparatorComponent={()=> (
-            <View style={styles.separator}/>
+          ItemSeparatorComponent={({highlighted})=> (
+            <View style={[styles.separator, highlighted && {backgroundColor: 'blue'}]}/>
           )}
         />
       </View>
@@ -202,6 +203,11 @@ const styles = StyleSheet.create({
   separator: {
     height: 2,
     backgroundColor: "purple",
+    marginVertical: 10,
+  },
+  separatorHighlighted: {
+    height: 2,
+    backgroundColor: "blue",
     marginVertical: 10,
   },
   bottomButton: {
