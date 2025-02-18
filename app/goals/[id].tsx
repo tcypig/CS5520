@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Stack, useLocalSearchParams, useNavigation } from 'expo-router';
 import { readDocFromDB } from '@/Firebase/firestoreHelper';
 import { GoalData, updateDB } from '@/Firebase/firestoreHelper';
+import PressableButton from '@/components/PressableButton';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function GoalDetail() {
   const { id } = useLocalSearchParams<{id: string}>();
@@ -41,7 +43,14 @@ export default function GoalDetail() {
         options={{
           headerTitle: goal ? (warning ? "warning" : goal.text) : "",
           headerRight: () => (
-            <Button title="warning" onPress={warningHandeler} />
+            <PressableButton
+              pressedHandler={warningHandeler}
+              // pressedStyle={styles.pressed}
+              componentStyle={styles.warningIcon}
+            >
+              <Ionicons name="warning" size={24} color="yellow" />
+            </PressableButton>
+            // <Button title="warning" onPress={warningHandeler} />
           ),
         }} />
       <Text style={warning && styles.warningText}>GoalDetail: {goal?.text}</Text>
@@ -53,5 +62,8 @@ const styles = StyleSheet.create({
   warningText: {
     color: "red",
     fontSize: 20,
-  }
+  },
+  warningIcon: {
+    backgroundColor: "#9900cc",
+  },
 })
