@@ -26,6 +26,7 @@ export default function GoalItem({goalObj, deleteHandler, deleteConfirmHandler, 
       onPress={() => 
         router.navigate(`/goals/${goalObj.id}`)
       }
+      onLongPress={() => deleteConfirmHandler?.(goalObj.id)}
       onPressIn={() => separators.highlight()}
       onPressOut={() => separators.unhighlight()}
     >
@@ -34,7 +35,6 @@ export default function GoalItem({goalObj, deleteHandler, deleteConfirmHandler, 
         pressedHandler={()=> {
           deleteHandler(goalObj.id)
         }}
-        longPressdHandler={() => deleteConfirmHandler?.(goalObj.id)}
         pressedStyle={styles.pressed}
         componentStyle={styles.deleteIcon}
       >
