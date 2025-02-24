@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { writeToDB } from '@/Firebase/firestoreHelper';
+import { readAllFromDB, writeToDB } from '@/Firebase/firestoreHelper';
 
 export interface User {
   id: number;
@@ -28,11 +28,25 @@ interface GoalUsersProps {
 }
 
 export default function GoalUsers({goalId}: GoalUsersProps) {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<{ id: string; name: string }[]>([]);
 
   useEffect( () => {
     async function getUsers() {
       try{
+        // check if the users are already in the database
+        // if they are, fetch them from the database
+        const userFromDB = await readAllFromDB(`goals/${goalId}/users`);
+        console.log("data from db ");
+        if (userFromDB) {
+          const userNames = userFromDB.map((user: User) => ({
+            id: user.id.toString(), 
+            name: user.name,
+          }));
+          setUsers(userNames);
+          return;
+        }
+
+        // if they are not in the database, fetch them from the API
         const response = await fetch("https://jsonplaceholder.typicode.com/users");
         if (!response.ok) {
           throw new Error(
@@ -44,6 +58,7 @@ export default function GoalUsers({goalId}: GoalUsersProps) {
           id: user.id.toString(), 
           name: user.name,
         }));
+        console.log("data from api ");
         setUsers(userNames);
         data.forEach((user: User) => {
           writeToDB(user, `goals/${goalId}/users`); 
