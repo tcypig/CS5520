@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native'
 import React from 'react'
 
 // type HeaderProps
@@ -7,9 +7,11 @@ interface HeaderProps {
 }
 
 export default function Header({name}: HeaderProps) {
+  const {width, height} = useWindowDimensions();
+
   return (
     <View>
-      <Text style={styles.header}>Welcome to {name}</Text>
+      <Text style={[styles.header, {padding: height < 415 ? 0 : 10}]}>Welcome to {name}</Text>
     </View>
   )
 }

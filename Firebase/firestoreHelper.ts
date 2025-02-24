@@ -1,13 +1,14 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, getDoc, updateDoc, setDoc, QuerySnapshot } from "firebase/firestore";
 import { database } from "./firebaseSetup";
+import { User } from "@/components/GoalUsers";
 
 export interface GoalData {
     text: string;
 }
 
-export async function writeToDB(data: GoalData, collectionName: string) {
+export async function writeToDB(data: GoalData|User, path: string) {
     try {
-        const docRef = await addDoc(collection(database, collectionName), data)
+        const docRef = await addDoc(collection(database, path), data)
     } catch (e) {   
         console.error("Error adding document: ", e);
     }
@@ -46,12 +47,26 @@ export async function readDocFromDB(id: string, collectionName: string) {
     catch (err) {
       console.log(err)
     }
-  }
+}
 
-  export async function updateDB(id: string, collectionName: string, updateData: {[key: string]: any}) {
-    try {
-      await setDoc(doc(database, collectionName, id), updateData, { merge: true });
-    } catch (e) {
-      console.error("Error updating document: ", e);
-    }
+export async function readAllFromDB(collectionName: string) {
+  const querySnapshot = await getDocs(collection(database, collectionName));
+  if (querySnapshot.empty) {
+    return null;
+  } else {
+    let data: User[] = [];
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data() as User);
+    });
+    return data;
   }
+}
+
+
+export async function updateDB(id: string, collectionName: string, updateData: {[key: string]: any}) {
+  try {
+    await setDoc(doc(database, collectionName, id), updateData, { merge: true });
+  } catch (e) {
+    console.error("Error updating document: ", e);
+  }
+}

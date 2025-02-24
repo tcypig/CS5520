@@ -5,11 +5,11 @@ import { readDocFromDB } from '@/Firebase/firestoreHelper';
 import { GoalData, updateDB } from '@/Firebase/firestoreHelper';
 import PressableButton from '@/components/PressableButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import GoalUsers from '@/components/GoalUsers';
 
 export default function GoalDetail() {
   const { id } = useLocalSearchParams<{id: string}>();
   const [goal, setGoal] = useState<GoalData | null>(null);
-  // const navigation = useNavigation();
   const [warning, setWarning] = useState(false);
   
   function warningHandeler() {
@@ -54,6 +54,7 @@ export default function GoalDetail() {
           ),
         }} />
       <Text style={warning && styles.warningText}>GoalDetail: {goal?.text}</Text>
+      <GoalUsers goalId={id} />
     </View>
   )
 }
