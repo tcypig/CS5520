@@ -1,13 +1,14 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { database } from "./firebaseSetup";
+import { User } from "@/components/GoalUsers";
 
 export interface GoalData {
     text: string;
 }
 
-export async function writeToDB(data: GoalData, collectionName: string) {
+export async function writeToDB(data: GoalData|User, path: string) {
     try {
-        const docRef = await addDoc(collection(database, collectionName), data)
+        const docRef = await addDoc(collection(database, path), data)
     } catch (e) {   
         console.error("Error adding document: ", e);
     }
