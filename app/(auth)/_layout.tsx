@@ -1,29 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { Slot } from "expo-router"
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '@/Firebase/firebaseSetup';
+import { Stack } from "expo-router";
 
-export default function _layout() {
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-
-  // listen for auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-      // User is signed in, see docs for a list of available properties
-        setUserLoggedIn(true);
-      } else {
-      // User is signed out
-        setUserLoggedIn(false);
-      }
-    })
-    return () => unsubscribe();
-  }, []);
-  
-  useEffect(() => {}, [userLoggedIn]);
-
+export default function Layout() {
   return (
-    <Slot />
-  )
+    <Stack
+      screenOptions={{
+        headerStyle: { backgroundColor: "purple" },
+        headerTintColor: "white",
+      }}
+    >
+      <Stack.Screen
+        name="login"
+        options={{
+          headerTitle: "Login",
+        }}
+      />
+      <Stack.Screen
+        name="signup"
+        options={{
+          headerTitle: "Sign up",
+        }}
+      />
+    </Stack>
+  );
 }
-
