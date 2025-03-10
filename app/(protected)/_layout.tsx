@@ -16,9 +16,10 @@ export default function Layout() {
       }}
     >
     <Stack.Screen name="index" options={{ 
-      headerTitle: "Homepage" ,
+      headerTitle: "All My Goals" ,
       headerRight: () => (
         <PressableButton
+          componentStyle={{ backgroundColor: "#9900cc" }}
           pressedHandler={() => router.push("/profile")}
         >
           <Ionicons name="person" size={24} color="white" />
@@ -35,6 +36,7 @@ export default function Layout() {
         headerTitle: "Profile",
         headerRight: () => (
           <PressableButton
+            componentStyle={{ backgroundColor: "#9900cc" }}
             pressedHandler={() => {signOut(auth)}}
           >
             <Ionicons name="log-out" size={24} color="white" />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import {auth} from '@/Firebase/firebaseSetup';
@@ -9,21 +9,21 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   const signupHandler = () => {
-    router.push('/(auth)/signup');
+    router.replace('signup');
   };
 
   const loginHandler = async () => {
+    if (email === '' || password === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+
     try {
-      if (email === '' || password === '') {
-        alert('Please fill in all fields');
-        return;
-      }
-  
       await signInWithEmailAndPassword(auth, email, password);
-      alert('Login successful!');
-      router.push('/(protected)/index');
-    } catch (error) {
-      alert((error as any).message);
+      Alert.alert('Login successful!');
+      // router.push('/(protected)/index');
+    } catch (error: any) {
+      Alert.alert("Error", error.message);
     }
   };
 
@@ -45,9 +45,7 @@ export default function Login() {
         onChangeText={setPassword}
       />
       <Button title="Log In" onPress={loginHandler} />
-      <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
-        <Text style={styles.link}>New User? Create an account</Text>
-      </TouchableOpacity>
+      <Button title="New User? Create an account" onPress={signupHandler} />
     </View>
   );
 }

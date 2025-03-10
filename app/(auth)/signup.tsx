@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { router } from 'expo-router';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/Firebase/firebaseSetup';
@@ -28,10 +28,10 @@ export default function Signup() {
 
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      alert('Account created!');
-      router.push('/(auth)/login');
-    } catch (error) {
-        alert('An unknown error occurred');
+      Alert.alert('Account created!');
+      // router.push('/(auth)/login');
+    } catch (error: any) {
+        Alert.alert("Error", error.message);
       }
   }
 
@@ -61,9 +61,7 @@ export default function Signup() {
         onChangeText={setConfirmPassword}
       />
       <Button title="Register" onPress={signupHandler} />
-      <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-        <Text style={styles.link}>Already Registered? Login</Text>
-      </TouchableOpacity>
+      <Button title="Already Registered? Login" onPress={loginHandler} />
     </View>
   );
 }
