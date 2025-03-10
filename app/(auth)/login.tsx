@@ -8,12 +8,22 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = async () => {
+  const signupHandler = () => {
+    router.push('/(auth)/signup');
+  };
+
+  const loginHandler = async () => {
     try {
+      if (email === '' || password === '') {
+        alert('Please fill in all fields');
+        return;
+      }
+  
       await signInWithEmailAndPassword(auth, email, password);
       alert('Login successful!');
+      router.push('/(protected)/index');
     } catch (error) {
-      alert('An unknown error occurred');
+      alert((error as any).message);
     }
   };
 
@@ -34,8 +44,8 @@ export default function Login() {
         value={password}
         onChangeText={setPassword}
       />
-      <Button title="Log In" onPress={handleLogin} />
-      <TouchableOpacity onPress={() => router.push('/auth/Signup')}>
+      <Button title="Log In" onPress={loginHandler} />
+      <TouchableOpacity onPress={() => router.push('/(auth)/signup')}>
         <Text style={styles.link}>New User? Create an account</Text>
       </TouchableOpacity>
     </View>

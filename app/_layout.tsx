@@ -26,7 +26,7 @@ export default function _layout() {
   useEffect(() => {
     if (userLoggedIn && segments[0] === '(auth)') {
       console.log('User is logged in');
-      router.replace("(protected")
+      router.replace("(protected)")
     } else if (!userLoggedIn && segments[0] === '(protected)') {
       console.log('User is not logged in');
       router.replace("(auth)/login")

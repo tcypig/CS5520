@@ -9,15 +9,27 @@ export default function Signup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSignup = async () => {
+  const loginHandler = () => {
+    router.replace("login");
+  }
+
+  const signupHandler = async () => {
+    if (email === '' || password === '' || confirmPassword === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+
+    // verify that email is valid
+    // verify password and confirm password match
     if (password !== confirmPassword) {
       alert("Passwords don't match!");
       return;
     }
+
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       alert('Account created!');
-      router.push('/auth/Login');
+      router.push('/(auth)/login');
     } catch (error) {
         alert('An unknown error occurred');
       }
@@ -48,8 +60,8 @@ export default function Signup() {
         value={confirmPassword}
         onChangeText={setConfirmPassword}
       />
-      <Button title="Register" onPress={handleSignup} />
-      <TouchableOpacity onPress={() => router.push('/auth/Login')}>
+      <Button title="Register" onPress={signupHandler} />
+      <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
         <Text style={styles.link}>Already Registered? Login</Text>
       </TouchableOpacity>
     </View>
