@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Input from '@/components/Input';
 import GoalItem from '@/components/GoalItem';
-import { database } from '@/Firebase/firebaseSetup';
+import { auth, database } from '@/Firebase/firebaseSetup';
 import { deleteAllFromDB, deleteFromDB, writeToDB } from '@/Firebase/firestoreHelper';
 import { GoalData } from '@/Firebase/firestoreHelper';
-import { collection, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import PressableButton from '@/components/PressableButton';
 
 export interface GoalFromDB {
@@ -24,7 +24,11 @@ export default function App() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {
     // start the listener on real time changes on goals collection
-    const unsubscribe = onSnapshot(collection(database, "goals"), (querySnapshot) => {
+    if (!auth.currentUser) return;
+    const unsubscribe = onSnapshot(
+      query(collection(database, "goals"),
+      where("owner", "==", auth.currentUser?.uid)
+    ), (querySnapshot) => {      
       // check if the querySnapshot is empty
       // setGoals([])
       if (querySnapshot.empty) {
@@ -40,8 +44,8 @@ export default function App() {
         console.log("newArray",newArrayOfGoals);
         setGoals(newArrayOfGoals);
       }
-      // else forEach on the querySnapshot and get the data by calling docSnapshot.data()
-      // store it in an array and setGoals with the array
+    }, (error: any) => {
+      console.error("Error reading goals", error);
     });
     // return a cleanup function to stop the listener
     return () => {
@@ -102,8 +106,14 @@ export default function App() {
     // define a variableo of type Goal object
     // update the goals state with the new goal object
     // use updating question
-    let newGoal: GoalData = {text: data};
-    writeToDB(newGoal, "goals");
+    if (auth.currentUser?.uid) {
+      let newGoal: GoalData = {
+        text: data, 
+        owner: auth.currentUser.uid};
+      writeToDB(newGoal, "goals");
+    } else {
+      console.error("User is not authenticated");
+    }
     // setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
 

@@ -4,6 +4,7 @@ import { User } from "@/components/GoalUsers";
 
 export interface GoalData {
     text: string;
+    owner: string;
 }
 
 export async function writeToDB(data: GoalData|User, path: string) {
