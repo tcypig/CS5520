@@ -1,18 +1,25 @@
 import { StyleSheet, Text, TextInput, View, Button, Modal, Alert, Image } from 'react-native'
 import React from 'react'
 import { useState } from 'react';
+import ImageManager from './ImageManager';
 
 interface InputProps {
   focused?: boolean;
-  inputHandler: (data:string) => void;
+  inputHandler: (data:UserInput) => void;
   modalVisble: boolean;
   cancelHandler: () => void;
+}
+
+export interface UserInput {
+  text: string;
+  imageUri: string;
 }
 
 export default function Input({ focused = false, inputHandler, modalVisble, cancelHandler }: InputProps) {
   const [text, setText] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [message, setMessage] = useState("");
+  const [takenImageUri, setTakenImageUri] = useState<string>("");
 
   
   function updateText(changedText: string) {
@@ -36,7 +43,8 @@ export default function Input({ focused = false, inputHandler, modalVisble, canc
 
   function handleConfirm() {
     console.log("user has typed ", text);
-    inputHandler(text);
+
+    inputHandler({ text: text, imageUri: takenImageUri });
     setText("");
   }
 
@@ -54,6 +62,10 @@ export default function Input({ focused = false, inputHandler, modalVisble, canc
         }
       },
     ]);
+  }
+
+  function imageUriHandler(uri: string) {
+    setTakenImageUri(uri);
   }
   
   return (
@@ -88,6 +100,9 @@ export default function Input({ focused = false, inputHandler, modalVisble, canc
           {!isFocused && (
             <Text>{message}</Text>
           )}
+
+          <ImageManager imageUriHandler={imageUriHandler}/>
+
           <View style={styles.buttonRow}>
             <View style={styles.buttonContainer}>
               <Button title="Cancel" onPress={handleCancel} />

@@ -9,6 +9,7 @@ import { deleteAllFromDB, deleteFromDB, writeToDB } from '@/Firebase/firestoreHe
 import { GoalData } from '@/Firebase/firestoreHelper';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import PressableButton from '@/components/PressableButton';
+import { UserInput } from '@/components/Input';
 
 export interface GoalFromDB {
   id: string;
@@ -99,7 +100,7 @@ export default function App() {
     )
   }
 
-  function handleInputData(data: string) {
+  function handleInputData(data: UserInput) {
     console.log("Data received from Input", data);
     // setReceivedData(data);
     setIsModalVisible(false);
@@ -108,7 +109,7 @@ export default function App() {
     // use updating question
     if (auth.currentUser?.uid) {
       let newGoal: GoalData = {
-        text: data, 
+        text: data.text, 
         owner: auth.currentUser.uid};
       writeToDB(newGoal, "goals");
     } else {
