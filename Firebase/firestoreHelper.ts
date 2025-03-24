@@ -5,6 +5,7 @@ import { User } from "@/components/GoalUsers";
 export interface GoalData {
     text: string;
     owner: string;
+    imageUri: string;
 }
 
 export async function writeToDB(data: GoalData|User, path: string) {
