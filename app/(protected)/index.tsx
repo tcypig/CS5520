@@ -43,7 +43,7 @@ export default function App() {
             id: docSnapshot.id
           });
         });
-        console.log("newArray",newArrayOfGoals);
+        // console.log("newArray",newArrayOfGoals);
         setGoals(newArrayOfGoals);
       }
     }, (error: any) => {
