@@ -6,6 +6,11 @@ export type Regio = {
 }
 
 export type LocationData = {
-  longitude: Number,
-  latitude: Number,
+  longitude: number,
+  latitude: number,
+}
+
+export type LatLng = {
+  latitude: number,    
+  longitude: number, 
 }
