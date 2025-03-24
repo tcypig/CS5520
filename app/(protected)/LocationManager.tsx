@@ -1,4 +1,4 @@
-import { Alert, Button, StyleSheet, Text, View, Image } from 'react-native'
+import { Alert, Button, StyleSheet, Text, View, Image, Dimensions } from 'react-native'
 import React, { useState } from 'react'
 import * as Location from 'expo-location';
 import MapView from "react-native-maps";
@@ -54,11 +54,17 @@ export default function LocationManager() {
       {location && (
         <Image 
           source= {{uri: `https://maps.googleapis.com/maps/api/staticmap?center=${location.latitude},${location.longitude}&zoom=14&size=400x200&maptype=roadmap&markers=color:red%7Clabel:L%7C${location.latitude},${location.longitude}&key=${process.env.EXPO_PUBLIC_mapsAPIkEY}`}}
-          style={{width: 400, height: 200}}
+          style={styles.map}
         />
       )}
     </View>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  map: {
+    width: Dimensions.get("window").width,
+    height: 200,
+    marginTop: 10,
+  },
+})

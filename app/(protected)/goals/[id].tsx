@@ -32,9 +32,9 @@ export default function GoalDetail() {
           }
           if (data.imageUri) {
             const imageRef = ref(storage, data.imageUri);
-            const uri = await getDownloadURL(imageRef)
-            console.log('uri', uri);
-            setUri(uri);
+            const downloadUri = await getDownloadURL(imageRef)
+            console.log('uri', downloadUri);
+            setUri(downloadUri);
           }
           setGoal(data as GoalData);
           // navigation.setOptions({headerTitle: data.text});
