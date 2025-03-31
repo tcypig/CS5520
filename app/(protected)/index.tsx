@@ -11,11 +11,22 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import PressableButton from '@/components/PressableButton';
 import { UserInput } from '@/components/Input';
 import { ref, uploadBytesResumable } from 'firebase/storage';
+import { setNotificationHandler } from 'expo-notifications';
 
 export interface GoalFromDB {
   id: string;
   text: string;
 }
+
+setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }
+  }
+});
 
 export default function App() {
   // console.log(database);
@@ -148,6 +159,8 @@ export default function App() {
     }
     // setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
+
+  
 
   return (
     <SafeAreaView style={styles.container}>

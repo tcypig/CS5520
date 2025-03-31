@@ -8,6 +8,7 @@ export default function map() {
   const [selectedLocation, setSelectedLocation] = useState<LocationData | null>(null);
   const [initLocation, setInitLocation] = useState<LocationData | null>(null);
   const params = useLocalSearchParams();
+  
   useEffect(() => {
     if (params && params.initLatitude && params.initLongitude) {
       setInitLocation({

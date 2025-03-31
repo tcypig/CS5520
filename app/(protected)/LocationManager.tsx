@@ -6,6 +6,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { readDocFromDB, writeToDB } from '@/Firebase/firestoreHelper';
 import { User, Address, Geo } from "@/components/GoalUsers";
 import { auth } from '@/Firebase/firebaseSetup';
+import { setNotificationHandler } from 'expo-notifications';
 
 export default function LocationManager() {
   const params = useLocalSearchParams();
