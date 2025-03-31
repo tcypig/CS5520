@@ -1,15 +1,20 @@
 import { addDoc, collection, deleteDoc, doc, getDocs, getDoc, updateDoc, setDoc, QuerySnapshot } from "firebase/firestore";
 import { database } from "./firebaseSetup";
-import { User } from "@/components/GoalUsers";
+import { User, Address, Geo } from "@/components/GoalUsers";
 
 export interface GoalData {
     text: string;
     owner: string;
+    imageUri: string;
 }
 
-export async function writeToDB(data: GoalData|User, path: string) {
+export async function writeToDB(data: GoalData|User, path: string, id?: string) {
     try {
+      if (id) {
+        const docRef = await setDoc(doc(database, path, id), data, { merge: true });
+      } else {
         const docRef = await addDoc(collection(database, path), data)
+      }
     } catch (e) {   
         console.error("Error adding document: ", e);
     }

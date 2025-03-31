@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { readAllFromDB, writeToDB } from '@/Firebase/firestoreHelper';
 
 export interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: Address;
+  id?: number;
+  name?: string;
+  username?: string;
+  email?: string;
+  address?: Address;
 }
 
 export interface Address {
-  street: string;
-  suite: string;
-  city: string;
-  zipcode: string;
+  street?: string;
+  suite?: string;
+  city?: string;
+  zipcode?: string;
   geo: Geo;
 }
 
@@ -28,7 +28,7 @@ interface GoalUsersProps {
 }
 
 export default function GoalUsers({goalId}: GoalUsersProps) {
-  const [users, setUsers] = useState<{ id: string; name: string }[]>([]);
+  const [users, setUsers] = useState<{ id?: string; name?: string }[]>([]);
 
   useEffect( () => {
     async function getUsers() {
@@ -39,7 +39,7 @@ export default function GoalUsers({goalId}: GoalUsersProps) {
         console.log("data from db ");
         if (userFromDB) {
           const userNames = userFromDB.map((user: User) => ({
-            id: user.id.toString(), 
+            id: user?.id?.toString(), 
             name: user.name,
           }));
           setUsers(userNames);
@@ -55,7 +55,7 @@ export default function GoalUsers({goalId}: GoalUsersProps) {
         } 
         const data = await response.json();
         const userNames = data.map((user: User) => ({
-          id: user.id.toString(), 
+          id: user?.id?.toString(), 
           name: user.name,
         }));
         console.log("data from api ");

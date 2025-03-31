@@ -4,17 +4,29 @@ import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Input from '@/components/Input';
 import GoalItem from '@/components/GoalItem';
-import { auth, database } from '@/Firebase/firebaseSetup';
+import { auth, database, storage } from '@/Firebase/firebaseSetup';
 import { deleteAllFromDB, deleteFromDB, writeToDB } from '@/Firebase/firestoreHelper';
 import { GoalData } from '@/Firebase/firestoreHelper';
 import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import PressableButton from '@/components/PressableButton';
 import { UserInput } from '@/components/Input';
+import { ref, uploadBytesResumable } from 'firebase/storage';
+import { setNotificationHandler } from 'expo-notifications';
 
 export interface GoalFromDB {
   id: string;
   text: string;
 }
+
+setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }
+  }
+});
 
 export default function App() {
   // console.log(database);
@@ -42,7 +54,7 @@ export default function App() {
             id: docSnapshot.id
           });
         });
-        console.log("newArray",newArrayOfGoals);
+        // console.log("newArray",newArrayOfGoals);
         setGoals(newArrayOfGoals);
       }
     }, (error: any) => {
@@ -100,8 +112,36 @@ export default function App() {
     )
   }
 
-  function handleInputData(data: UserInput) {
-    console.log("Data received from Input", data);
+  async function fetchImage(uri: string) {
+    try {
+      const response = await fetch(uri);
+      if (!response.ok) {
+        throw new Error("Error fetching image");
+      }
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+      console.log("Image name", `images/${imageName}`);
+      console.log("storage", storage);
+      const imageRef = ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      console.log("Upload result", uploadResult);
+      return uploadResult.metadata.fullPath;
+
+
+    } catch (error) {
+      console.error("Error fetching image", error);
+    }
+  }
+
+  async function handleInputData(data: UserInput) {
+    console.log("Data received from Input", data.imageUri);
+
+    let storedImageUri = "";
+    if (data.imageUri) {
+      storedImageUri = await fetchImage(data.imageUri) ?? "";
+      console.log("Stored image uri", storedImageUri);
+    }
+
     // setReceivedData(data);
     setIsModalVisible(false);
     // define a variableo of type Goal object
@@ -110,13 +150,17 @@ export default function App() {
     if (auth.currentUser?.uid) {
       let newGoal: GoalData = {
         text: data.text, 
-        owner: auth.currentUser.uid};
+        owner: auth.currentUser.uid,
+        imageUri: storedImageUri ?? ""
+      };
       writeToDB(newGoal, "goals");
     } else {
       console.error("User is not authenticated");
     }
     // setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
+
+  
 
   return (
     <SafeAreaView style={styles.container}>
