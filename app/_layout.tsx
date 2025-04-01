@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Text } from 'react-native'
 import { router, Slot, useSegments } from "expo-router"
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@/Firebase/firebaseSetup';
@@ -8,6 +9,7 @@ export default function _layout() {
   console.log("segments", segments);
 
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // listen for auth state changes
   useEffect(() => {
@@ -19,11 +21,15 @@ export default function _layout() {
       // User is signed out
         setUserLoggedIn(false);
       }
+      setIsLoading(false);
     })
     return () => unsubscribe();
   }, []);
   
   useEffect(() => {
+    if (isLoading) {
+      return;
+    }
     if (userLoggedIn && segments[0] === '(auth)') {
       console.log('User is logged in');
       router.replace("(protected)")
@@ -31,10 +37,10 @@ export default function _layout() {
       console.log('User is not logged in');
       router.replace("(auth)/login")
     }
-  }, [userLoggedIn]);
+  }, [userLoggedIn, isLoading]);
 
   return (
-    <Slot />
+    isLoading ? <Text>isLoading</Text> : <Slot />
   )
 }
 
