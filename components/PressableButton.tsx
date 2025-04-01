@@ -2,7 +2,7 @@ import { Pressable, StyleProp, StyleSheet, Text, View, ViewStyle } from 'react-n
 import React from 'react'
 
 interface PressableButtonProps {
-    pressedHandler: () => void;
+    pressedHandler?: () => void;
     pressedInHandler?: () => void;
     pressedStyle?: StyleProp<ViewStyle>;
     children: React.ReactNode;
@@ -13,6 +13,7 @@ export default function PressableButton({children, pressedHandler, pressedInHand
   return (
     <Pressable 
       onPress={pressedHandler} 
+      onPressIn={pressedInHandler}
       style={({pressed})=>{
         return [
           styles.defaultStyle, 

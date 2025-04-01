@@ -54,7 +54,7 @@ export default function GoalDetail() {
           headerTitle: goal ? (warning ? "warning" : goal.text) : "",
           headerRight: () => (
             <PressableButton
-              pressedHandler={warningHandeler}
+              pressedInHandler={warningHandeler}
               // pressedStyle={styles.pressed}
               componentStyle={styles.warningIcon}
             >

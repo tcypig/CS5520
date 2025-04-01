@@ -17,40 +17,46 @@ export default function LocationManager() {
 
   useEffect(() => {
     async function fetchLocation() {
-        if (auth.currentUser?.uid) {
-          try{
-            const data = await readDocFromDB(auth.currentUser.uid, "users");
-            if (data?.address?.geo) {
-              setLocation({
-                latitude: parseFloat(data.address.geo.lat),
-                longitude: parseFloat(data.address.geo.lng),
-              });
-            }
-          } catch (err) {
-            console.error("Error fetching location from Firestore:", err);
+      if (auth.currentUser?.uid) {
+        try{
+          const data = await readDocFromDB(auth.currentUser.uid, "users");
+          if (data?.address?.geo) {
+            setLocation({
+              latitude: parseFloat(data.address.geo.lat),
+              longitude: parseFloat(data.address.geo.lng),
+            });
           }
-          
+        } catch (err) {
+          console.error("Error fetching location from Firestore:", err);
         }
+        
+      }
     }
     fetchLocation();
   }, []);
   
-   // if (params) update the location state variable
-   console.log("params :", params);
-   useEffect(() => {
-     if (params.latitude && params.longitude) {
-       setLocation({
-         latitude: parseFloat(
-           Array.isArray(params.latitude) ? params.latitude[0] : params.latitude
-         ),
-         longitude: parseFloat(
-           Array.isArray(params.longitude)
-             ? params.longitude[0]
-             : params.longitude
-         ),
-       });
-     }
-   }, []);
+  // if (params) update the location state variable
+  console.log("params :", params);
+  useEffect(() => {
+    if (params.latitude && params.longitude) {
+      setLocation({
+        latitude: parseFloat(
+          Array.isArray(params.latitude) ? params.latitude[0] : params.latitude
+        ),
+        longitude: parseFloat(
+          Array.isArray(params.longitude)
+            ? params.longitude[0]
+            : params.longitude
+        ),
+      });
+    }
+  }, [params.latitude, params.longitude]);
+
+  useEffect(() => {
+    if (location) {
+      console.log("📍 Location updated to:", location);
+    }
+  }, [location]);
 
   async function verifyPermissions() {
     if (permissionResponse?.granted) return true;

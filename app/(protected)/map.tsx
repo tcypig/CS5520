@@ -26,8 +26,12 @@ export default function map() {
     }
   }, []);
 
+  useEffect(() => {
+    console.log("selected location:", selectedLocation);
+  }, [selectedLocation]);
+
   function confirmLocationHandler() {
-    router.push({
+    router.dismissTo({
       pathname: "/profile",
       params: {
         latitude: selectedLocation?.latitude,
