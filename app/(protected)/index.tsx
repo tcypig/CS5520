@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert, Pressable } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert, Pressable, Linking } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Input from '@/components/Input';
@@ -11,7 +11,8 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 import PressableButton from '@/components/PressableButton';
 import { UserInput } from '@/components/Input';
 import { ref, uploadBytesResumable } from 'firebase/storage';
-import { setNotificationHandler } from 'expo-notifications';
+import { addNotificationReceivedListener, getExpoPushTokenAsync, setNotificationHandler } from 'expo-notifications';
+import { router } from 'expo-router';
 
 export interface GoalFromDB {
   id: string;
@@ -64,6 +65,30 @@ export default function App() {
     return () => {
       unsubscribe();
     };
+  }, []);
+
+  // listen for notifications
+  useEffect(() => {
+    const subscription = addNotificationReceivedListener((notification) => {
+      console.log("Notification received", notification);
+      // use linking API from react native to open the url
+      // Linking.openURL(notification.request.content.data.url);
+      router.navigate("/")
+    });
+    return () => {
+      subscription.remove();
+    }
+  }, []);
+
+  useEffect(() => {
+    async function fetchToken() {
+      try {
+        await getExpoPushTokenAsync()
+      } catch (error) {
+        console.error("Error fetching token", error);
+      }
+    };
+    fetchToken();
   }, []);
 
   function handleDeleteGoal(id: string) {
