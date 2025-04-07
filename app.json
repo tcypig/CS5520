@@ -24,8 +24,15 @@
         "backgroundColor": "#ffffff"
       },
       "permissions": [
-        "CAMERA"
-      ]
+        "android.permission.CAMERA",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.VIBRATE",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.tessie.Spring2025"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -37,9 +44,16 @@
         {
           "cameraPermission": "The app needs access to your camera.",
           "photosPermission": "The app accesses your photos to take pyotos and add them to your goals."
-
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "fd6b9ede-e8d9-4902-8c97-cfd37f15916e"
+      }
+    }
   }
 }

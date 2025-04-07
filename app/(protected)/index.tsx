@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert, Pressable, Linking } from 'react-native';
+import { StyleSheet, Text,  View, Button, SafeAreaView, ScrollView, FlatList, Alert, Pressable, Linking, Platform } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Input from '@/components/Input';
@@ -13,6 +13,8 @@ import { UserInput } from '@/components/Input';
 import { ref, uploadBytesResumable } from 'firebase/storage';
 import { addNotificationReceivedListener, getExpoPushTokenAsync, setNotificationHandler } from 'expo-notifications';
 import { router } from 'expo-router';
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
 
 export interface GoalFromDB {
   id: string;
@@ -30,6 +32,7 @@ setNotificationHandler({
 });
 
 export default function App() {
+  const [token, setToken] = useState("");
   // console.log(database);
   const appName = "My Awesome App";
   const [goals, setGoals] = useState<GoalFromDB[]>([]); 
@@ -80,10 +83,42 @@ export default function App() {
     }
   }, []);
 
+  async function verifyPermissions() {
+    try {
+      const permissionResponse = await Notifications.getPermissionsAsync();
+      if (permissionResponse.granted) {
+        return true;
+      }
+
+      const response = await Notifications.requestPermissionsAsync();
+      console.log("Permission request result:", response);
+
+      return response.granted;
+    } catch (error) {
+      console.log("Error verifying permissions:", error);
+    }
+  }
+  
   useEffect(() => {
     async function fetchToken() {
       try {
-        await getExpoPushTokenAsync()
+        const hasPermission = verifyPermissions();
+        if (!hasPermission) {
+          Alert.alert("Permission not granted", "Please enable notifications in settings");
+          return;
+        }
+        if (Platform.OS === "android") {
+          await Notifications.setNotificationChannelAsync("default", {
+            name: "Default",
+            importance: Notifications.AndroidImportance.MAX,
+          }
+        )}
+        // get the token
+        const tokenInfo = await getExpoPushTokenAsync({
+          projectId:Constants.expoConfig?.extra?.eas.projectId
+        });
+        // console.log("Expo push token", tokenInfo.data);
+        setToken(tokenInfo.data);
       } catch (error) {
         console.error("Error fetching token", error);
       }
@@ -185,7 +220,20 @@ export default function App() {
     // setGoals((currGoals)=> {return [...currGoals, newGoal]});
   }
 
-  
+  function testPushNotification(token: string) {
+    console.log("Push notification token", token);
+    fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        to: token,
+        title: "Push Notification",
+        body: "This is a push notification",
+      })
+    });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -203,6 +251,10 @@ export default function App() {
           pressedHandler={() => setIsModalVisible(true)}>
           <Text style={styles.addGoalButton}>Add a Goal</Text>
         </PressableButton>
+        <Button 
+         title="Test Push Notification"
+         onPress={()=> testPushNotification(token)}
+        />
         {/* <Button title='Add a goal' onPress={() => setIsModalVisible(true)} /> */}
       </View>
       <View style={styles.bottomContainer}>
