@@ -35,7 +35,7 @@ export default function NotificationManager() {
         content: {
           title: 'Daily Goals Reminder',
           body: "Don't forget to add your daily goals!",
-          data: { data: 'goes here' },
+          data: { url: 'https://google.com' },
         },
         trigger: {
           seconds: 5, 
